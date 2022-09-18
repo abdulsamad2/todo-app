@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import TodoFrom from "./components/TodoFrom";
+import TodoList from "./components/TodoList";
+import uniqid from "uniqid";
 
 function App() {
+  const [tasklist, setTasklist] = useState([]);
+  const saveSubmitHanlder = (enteredData) => {
+    const sumitedData = {
+      ...enteredData,
+      id: uniqid(),
+    };
+
+    setTasklist((prevState) => [...prevState, sumitedData]);
+  };
+  function deleteHandler(id) {
+    setTasklist((oldTask) => oldTask.filter((item) => item.id !== id));
+  }
+
+  const element = tasklist.map((item) => {
+    let task = item.task;
+    let id = item.id;
+
+    if (task) {
+      return (
+        <TodoList
+          key={id}
+          elementId={id}
+          taskName={task}
+          deleteHandler={() => deleteHandler(id)}
+        />
+      );
+    }
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="text-2xl text-center py-4 bg-green-400 capitalize">
+        Todo List
+      </h1>
+      <TodoFrom onsaveSubmitData={saveSubmitHanlder} />
+      {element}
     </div>
   );
 }
