@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoFrom from "./components/TodoFrom";
 import TodoList from "./components/TodoList";
 import uniqid from "uniqid";
 
 function App() {
-  const [tasklist, setTasklist] = useState([]);
+  const arr = JSON.parse(localStorage.getItem("task"));
+  const [tasklist, setTasklist] = useState(arr);
+
   const saveSubmitHanlder = (enteredData) => {
     const sumitedData = {
       ...enteredData,
@@ -16,6 +18,9 @@ function App() {
   function deleteHandler(id) {
     setTasklist((oldTask) => oldTask.filter((item) => item.id !== id));
   }
+  useEffect(() => {
+    localStorage.setItem("task", JSON.stringify(tasklist));
+  }, [tasklist]);
 
   const element = tasklist.map((item) => {
     let task = item.task;
