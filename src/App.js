@@ -5,7 +5,7 @@ import uniqid from "uniqid";
 
 function App() {
   const arr = JSON.parse(localStorage.getItem("task"));
-  const [tasklist, setTasklist] = useState(arr);
+  const [tasklist, setTasklist] = useState(arr || []);
 
   const saveSubmitHanlder = (enteredData) => {
     const sumitedData = {
